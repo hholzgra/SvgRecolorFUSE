@@ -1,0 +1,12 @@
+[Unit]
+Description=SVG recolor service exposed via FUSE
+After=multi-user.target
+
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/home/ubuntu/SvgRecolorFUSE
+ExecStart=/home/ubuntu/SvgRecolorFUSE/SvgRecolorFUSE.py -o allow_other -o svgdir=/home/ubuntu/SvgRecolorFUSE/svg/ /home/ubuntu/SvgRecolorFUSE/mnt
+
+[Install]
+WantedBy=multi-user.target
