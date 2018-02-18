@@ -6,7 +6,7 @@
 #    See the file COPYING.
 #
 
-import os, os.path, stat, errno, glob, re
+import os, os.path, stat, errno, glob, re, logging
 from colour import Color
 
 try:
@@ -114,10 +114,7 @@ class SvgRecolorFS(Fuse):
         if os.path.isfile(svg_path):
             with open(svg_path, 'r') as myfile:
                 svgdata = myfile.read();
-                if (re.match(r'#ff0000', svgdata)):
-                    svgdata.replace('#ff0000', hexl)
-                # else:
-                #     TODO parse XML and add fill attribute 
+                svgdata = svgdata.replace('#ff0000', hexl)
         else:
             return -errno.ENOENT
 
@@ -135,6 +132,9 @@ def main():
     usage="""
 Userspace hello example
 """ + Fuse.fusage
+    logging.basicConfig(filename='SvgRecolorFS.log',level=logging.DEBUG)
+    logging.info("SygRecolorFS starting");
+    
     server = SvgRecolorFS(version="%prog " + fuse.__version__,
                      usage=usage,
                      dash_s_do='setsingle')
